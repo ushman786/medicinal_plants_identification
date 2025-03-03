@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% block title %}Disease Information{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Page Title -->
+    <h1 class="text-center text-gradient fw-bold mb-5">🌿 Home Remedies for Common Diseases</h1>
+
+    <!-- Problem Selection Card -->
+    <div class="card problem-card p-4 mb-5">
+        <h4 class="fw-bold text-center mb-4">🔍 Select a Problem</h4>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="disease" class="form-label fw-bold">Problem</label>
+                <div class="input-group">
+                    <select name="disease" class="form-select problem-select">
+                        {% for disease in diseases %}
+                        <option value="{{ disease.id }}">{{ disease.disease_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-advanced">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Disease Details -->
+    {% if selected_disease %}
+    <div class="card disease-details p-4 mb-5">
+        <h3 class="text-center text-gradient fw-bold mb-4">{{ selected_disease.disease_name }}</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>📖 Description:</strong> {{ selected_disease.description }}</p>
+                <p><strong>🌿 Plants Used:</strong> {{ selected_disease.comabination }}</p>
+                <p><strong>🌿 Recipes:</strong> {{ selected_disease.combination_description }}</p>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-center text-gradient mb-4">🌿 Recommended Plants</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="plant-card">
+                            <img src="{{ url_for('static', filename='plant/' + selected_disease.image_name_one) }}" 
+                                 class="img-fluid rounded" 
+                                 alt="Plant 1">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="plant-card">
+                            <img src="{{ url_for('static', filename='plant/' + selected_disease.image_name_two) }}" 
+                                 class="img-fluid rounded" 
+                                 alt="Plant 2">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="plant-card">
+                            <img src="{{ url_for('static', filename='plant/' + selected_disease.image_name_three) }}" 
+                                 class="img-fluid rounded" 
+                                 alt="Plant 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Custom Styling -->
+<style>
+    /* Modern Gradient Background */
+    body {
+        background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Gradient Text */
+    .text-gradient {
+        background: linear-gradient(135deg, #327735, #388c42);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Problem Selection Card */
+    .problem-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .problem-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Problem Select Dropdown */
+    .problem-select {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .problem-select:focus {
+        border-color: #6a11cb;
+        box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+    }
+
+    /* Advanced Button */
+    .btn-advanced {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-advanced:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+    }
+
+    /* Disease Details Card */
+    .disease-details {
+        background: #ffffff;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Plant Cards */
+    .plant-card {
+        background: #f9f9f9;
+        border-radius: 10px;
+        padding: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .plant-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .plant-card img {
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .plant-card img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+
+        .btn-advanced {
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+    }
+</style>
+
+<!-- Load Inter Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Medicinal Plants{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center fw-bold text-success">🌿 Medicinal Plants 🌿</h1>
+    <p class="text-center text-muted">Explore medicinal plants, their benefits, and uses.</p>
+
+    <!-- Search Bar -->
+    <div class="d-flex justify-content-center">
+        <div class="input-group mb-4 w-50">
+            <span class="input-group-text bg-success text-white"><i class="bi bi-search"></i></span>
+            <input type="text" id="plantSearch" class="form-control rounded-pill" placeholder="Search for a plant..." onkeyup="searchPlants()">
+        </div>
+    </div>
+
+    <!-- Plants Grid -->
+    <div class="row justify-content-center" id="plantCards">
+        {% for plant in plants %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 plant-card">
+            <div class="card shadow-lg border-0 rounded-3 animate-card">
+                <img src="{{ url_for('static', filename='plant/' + plant.image_name) }}" class="card-img-top img-fluid" alt="{{ plant.common_name }}">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold text-success">{{ plant.description }}</h5>
+                    <a href="{{ url_for('main.herbal_plant_detail', predicted_label=plant.description) }}" class="btn btn-outline-success btn-sm shadow-sm">View Details</a>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Search Functionality -->
+<script>
+    function searchPlants() {
+        let input = document.getElementById("plantSearch").value.toLowerCase();
+        let cards = document.querySelectorAll(".plant-card");
+
+        cards.forEach(card => {
+            let name = card.querySelector(".card-title").innerText.toLowerCase();
+            if (name.includes(input)) {
+                card.style.display = "block";
+                card.classList.add("fade-in");
+            } else {
+                card.style.display = "none";
+                card.classList.remove("fade-in");
+            }
+        });
+    }
+</script>
+
+<!-- Custom Styles -->
+<style>
+    /* Hover Animation for Cards */
+    .animate-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    
+    .animate-card:hover {
+        transform: scale(1.07);
+        box-shadow: 0px 10px 18px rgba(0, 128, 0, 0.3);
+    }
+
+    /* Image Styling */
+    .card img {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Smooth Fade-in Effect */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
+{% endblock %}
